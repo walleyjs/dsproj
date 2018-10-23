@@ -6,6 +6,9 @@ var Todo=require("./models/todo.js");
 var User=require("./models/user.js");
 var nodemailer=require("nodemailer");
 var twilio=require("twilio");
+const accountSid = 'ACc17442b0ab36cf4106de614b5693f943';
+const authToken = 'ad0ae41a14a4d70757a7f049c12b2e28';
+const client = twilio(accountSid, authToken);
 mongoose.connect("mongodb://localhost/todo_app");
 // Todo.create({
 //     hobby:"playing football",
@@ -34,10 +37,12 @@ app.post("/user/signup",function (req,res) {
     var username=req.body.username;
     var password=req.body.password;
     var email=req.body.email;
+    var number=req.body.number;
     var user={
         username:username,
         password:password,
-        email:email
+        email:email,
+        number:number
     }
     User.create(user,function (err,user) {
         if (err) {
@@ -51,6 +56,7 @@ app.post("/todoapp/:todo",function (req,res) {
     var hobby;
     var image;
     var usermail;
+    var usernumber;
     User.findById(req.params.todo,function (err,user) {
         if (err) {
             console.log(err);
@@ -60,6 +66,7 @@ app.post("/todoapp/:todo",function (req,res) {
             image = req.body.image;
             var todoApp={hobby:hobby,image:image};
             usermail=user.email;
+            usernumber="+234"+user.number;
             Todo.create(todoApp,function (err,todoinput) {
               if (err) {
                 console.log(err);
@@ -75,7 +82,7 @@ app.post("/todoapp/:todo",function (req,res) {
     <h1>you just added a new hobby</h1>
     <p>Hobby:${hobby}</p>
     `;
-    
+    var twiliooutput="you just added a new hobby: "+ hobby
     var account={
         user:"rajibashirolawale@gmail.com",
         pass:"bashirolawale"
@@ -120,6 +127,23 @@ app.post("/todoapp/:todo",function (req,res) {
         // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
         // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
     });
+    client.messages
+  .create({
+     body: twiliooutput,
+     from: '(781) 875-8045',
+     to: usernumber
+   })
+  .then(function (err,message) {
+      if (err) {
+          console.log(err)
+        //   res.redirect("")
+      } else {
+
+        //    console.log(message.sid);
+      }
+     
+  })
+  .done();
         }
     })
     
@@ -137,6 +161,8 @@ app.post("/todoapp/:todo",function (req,res) {
         }
     });
 });
+
+
 
 var server= app.listen(app.get("port"),function () {
     console.log("you are listening to port " +app.get("port"));
