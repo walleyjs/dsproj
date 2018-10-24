@@ -9,8 +9,8 @@ var twilio=require("twilio");
 const accountSid = 'ACc17442b0ab36cf4106de614b5693f943';
 const authToken = 'ad0ae41a14a4d70757a7f049c12b2e28';
 const client = twilio(accountSid, authToken);
-mongoose.connect("mongodb://localhost/todo_app");
-
+// mongoose.connect("mongodb://localhost/todo_app");
+mongoose.connect("mongodb://Walley:WAlley160.@ds239873.mlab.com:39873/dsinternchallenge");
 app.set("view engine","ejs");
 app.set("views","views");
 app.use(bodyParser.urlencoded({extended:true}));
@@ -104,7 +104,7 @@ app.get("/user/login",function (req,res) {
 
 app.post("/todoapp/:todo",function (req,res) {
     var hobby;
-    var image;
+    
     var usermail;
     var usernumber;
     User.findById(req.params.todo,function (err,user) {
@@ -112,9 +112,8 @@ app.post("/todoapp/:todo",function (req,res) {
             console.log(err);
             console.log("there is an error some");
         } else {
-            hobby=req.body.hobby;
-            image = req.body.image;
-            var todoApp={hobby:hobby,image:image};
+            hobby=req.body.hobby; 
+            var todoApp={hobby:hobby};
             usermail=user.email;
             usernumber="+234"+user.number;
             Todo.create(todoApp,function (err,todoinput) {
