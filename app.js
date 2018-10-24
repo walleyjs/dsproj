@@ -14,6 +14,11 @@ mongoose.connect("mongodb://localhost/todo_app");
 //     hobby:"playing football",
 //     image:"https://image.shutterstock.com/display_pic_with_logo/59982/706056724/stock-photo-family-vacation-travel-holiday-trip-in-motorhome-caravan-car-vacation-beautiful-nature-italy-706056724.jpg"
 // });
+app.use(require("express-session")({
+    secret: "i will be the best programmer in the world",
+    resave: false,
+    saveUninitialized: false
+}));
 app.set("view engine","ejs");
 app.set("views","views");
 app.use(bodyParser.urlencoded({extended:true}));
@@ -23,35 +28,86 @@ app.set("port",process.env.PORT || 5000);
 
 
 
-// app.get("/",function (req,res) {
-//     res.redirect("/todoapp");
-// });
-app.get("/user/login",function (req,res) {
-        res.render("login");
-}); 
+app.get("/",function (req,res) {
+    res.render("landing");
+});
 app.get("/user/signup",function (req,res) {
-    
         res.render("signup");
-})
+});
+
 app.post("/user/signup",function (req,res) {
-    var username=req.body.username;
+    
+    // var newUser=new User({
+    //     username:req.body.username
+    // });
     var password=req.body.password;
+    var username=req.body.username;
     var email=req.body.email;
     var number=req.body.number;
     var user={
         username:username,
-        password:password,
         email:email,
-        number:number
+        number:number,
+        password:password
     }
     User.create(user,function (err,user) {
         if (err) {
             console.log(err);
+            return res.render("signup");
         } else {
             res.redirect("/todoapp/"+ user.id );
+            // User.register(newUser,req.body.password,function (err,reg) {
+            //     if (err) {
+            //        console.log(err);
+            //     } else {
+            //          passport.authenticate("local")(req,res,function () {
+            //     res.redirect("/todoapp/"+ user.id );
+            //     }
+            // )}
+            
+        
+            //  })
         }
     })
 });
+// app.get("/user/login",function (req,res) {
+//         res.render("login");
+// });
+app.get("/user/login",function (req,res) { 
+    var password=req.query.password;
+    var username=req.query.username;
+    // const regexUser = new RegExp(escapeRegex(username), 'gi');
+    // var user={
+    //     username:username,
+    //     password:password
+    // }
+    if (username) {
+        User.find({username:username,password:password},function (err,user) {
+        if (err) {
+            console.log(err);
+            console.log("==========user not in db=====")
+        } else {
+            
+            console.log("==========sippose not in db=====");
+
+            user.forEach(user => {
+                console.log("here")
+                console.log(user);
+                res.redirect("/todoapp/"+ user.id );
+            });
+            
+        // passport.authenticate("local", {
+        //   successRedirect:"/todoapp/"+ user.id,
+        //   failureRedirect:"/user/login"
+}
+});
+    } else {
+        res.render("login");
+    }
+    
+        });
+ 
+
 app.post("/todoapp/:todo",function (req,res) {
     var hobby;
     var image;
@@ -161,8 +217,13 @@ app.post("/todoapp/:todo",function (req,res) {
         }
     });
 });
-
-
+// app.get("/logout", function (req, res) {
+//     req.logout();
+//     res.redirect("/landing");
+// });
+// function escapeRegex(text) {
+//     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+// };
 
 var server= app.listen(app.get("port"),function () {
     console.log("you are listening to port " +app.get("port"));
