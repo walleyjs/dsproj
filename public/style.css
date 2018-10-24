@@ -68,4 +68,56 @@ a{
 li a {
     color: #099b79fc;
 }
+/* landing */
+#lastback_img{
+    min-height: 535px;
+    background-image:url("imgs/office-1.jpeg");
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#lastcontent{
+     display: flex; 
+    background-color:#362c2999;
+    flex-direction: column;
+    width: 100%;
+    height:535px;
+    color: white;
+    align-items: center;
+    padding: 100px 0px 0px 0px;
+    /* padding: 0px 0px 0px 0px; */
+     /* z-index:2;   */
+}
+#border1 {
+    padding: 0px 0px 29px 0px;
+    border-bottom: solid white 2px;
+    /* border-radius: 5px; */
+}
+#lastcont{
+    display: flex;
+    flex-direction: column;
+     /* width: 50%; */
+     align-items: center;
+     text-align: center;
+     font-size: 20px;
+}
+.lastcont1{
+padding: 0px 0px 15px 0px;
+}
+.lastcont3{
+    padding: 40px 0px 0px 0px;
+    width: 70%;
+    color:#ffffffe6;
+}
+#lastbtn h3{
+    margin-top: 50px;
+    padding:15px 20px 18px 20px;
+    font-size: 13px;
+    border:solid #e7696999 0px;
+    cursor: pointer;
+    color: white;
+    border-radius: 7px;
+     background-color: #e76969;
+}
 

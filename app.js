@@ -183,22 +183,10 @@ app.post("/todoapp/:todo",function (req,res) {
      from: '(781) 875-8045',
      to: usernumber
    })
-  .then(function (err,message) {
-      if (err) {
-          console.log(err)
-          res.redirect("/signUp");
-          console.log("erro twiilo")
-      } else {
-
-        //    console.log(message.sid);
-      }
-     
-  })
+  .then()
   .done();
         }
     })
-    
-    
 });
     app.get("/todoapp/:id",function (req,res) {
     User.findById(req.params.id).populate("todo").exec(function (err,usertodo) {
