@@ -76,36 +76,31 @@ app.post("/user/signup",function (req,res) {
 app.get("/user/login",function (req,res) { 
     var password=req.query.password;
     var username=req.query.username;
-    // const regexUser = new RegExp(escapeRegex(username), 'gi');
-    // var user={
-    //     username:username,
-    //     password:password
-    // }
-    if (username) {
+    if (username && password ) {
         User.find({username:username,password:password},function (err,user) {
-        if (err) {
-            console.log(err);
-            console.log("==========user not in db=====")
-        } else {
-            
-            console.log("==========sippose not in db=====");
+        
 
+        if (user.username==username && user.password==password) {
             user.forEach(user => {
-                console.log("here")
-                console.log(user);
-                res.redirect("/todoapp/"+ user.id );
+            console.log("==========sippose not in db=====");
+             console.log("here")
+            console.log(user);
+            res.redirect("/todoapp/"+ user.id );    
             });
+        }
+        else{
             
-        // passport.authenticate("local", {
-        //   successRedirect:"/todoapp/"+ user.id,
-        //   failureRedirect:"/user/login"
-}
+            console.log(user+"not right");
+            res.render("login");
+        }
+            
 });
     } else {
         res.render("login");
     }
     
-        });
+        }
+        );
  
 
 app.post("/todoapp/:todo",function (req,res) {
