@@ -10,15 +10,7 @@ const accountSid = 'ACc17442b0ab36cf4106de614b5693f943';
 const authToken = 'ad0ae41a14a4d70757a7f049c12b2e28';
 const client = twilio(accountSid, authToken);
 mongoose.connect("mongodb://localhost/todo_app");
-// Todo.create({
-//     hobby:"playing football",
-//     image:"https://image.shutterstock.com/display_pic_with_logo/59982/706056724/stock-photo-family-vacation-travel-holiday-trip-in-motorhome-caravan-car-vacation-beautiful-nature-italy-706056724.jpg"
-// });
-app.use(require("express-session")({
-    secret: "i will be the best programmer in the world",
-    resave: false,
-    saveUninitialized: false
-}));
+
 app.set("view engine","ejs");
 app.set("views","views");
 app.use(bodyParser.urlencoded({extended:true}));
@@ -29,10 +21,26 @@ app.set("port",process.env.PORT || 5000);
 
 
 app.get("/",function (req,res) {
-    res.render("landing");
+    User.find({},function (err,user) {
+        if (err) {
+            console.log(err);
+        } else {
+            var userLogin=user.username;
+            res.render("landing",{userLogin:userLogin});
+        }
+    })
+    
 });
 app.get("/user/signup",function (req,res) {
-        res.render("signup");
+   User.find({},function (err,user) {
+        if (err) {
+            console.log(err);
+        } else {
+            var userLogin=user.username;
+            res.render("signup",{userLogin:userLogin});
+        }
+    })
+        
 });
 
 app.post("/user/signup",function (req,res) {
@@ -56,17 +64,6 @@ app.post("/user/signup",function (req,res) {
             return res.render("signup");
         } else {
             res.redirect("/todoapp/"+ user.id );
-            // User.register(newUser,req.body.password,function (err,reg) {
-            //     if (err) {
-            //        console.log(err);
-            //     } else {
-            //          passport.authenticate("local")(req,res,function () {
-            //     res.redirect("/todoapp/"+ user.id );
-            //     }
-            // )}
-            
-        
-            //  })
         }
     })
 });
@@ -76,27 +73,29 @@ app.post("/user/signup",function (req,res) {
 app.get("/user/login",function (req,res) { 
     var password=req.query.password;
     var username=req.query.username;
+    var userLogin;
     if (username && password ) {
         User.find({username:username,password:password},function (err,user) {
         
-
+           
         if (user.username==username && user.password==password) {
+            console.log(user+"not right");
+            res.render("login",{userLogin:userLogin});
+        }
+        else{
             user.forEach(user => {
+            userLogin=user.username;
             console.log("==========sippose not in db=====");
              console.log("here")
             console.log(user);
             res.redirect("/todoapp/"+ user.id );    
             });
-        }
-        else{
             
-            console.log(user+"not right");
-            res.render("login");
         }
             
 });
     } else {
-        res.render("login");
+        res.render("login",{userLogin:userLogin});
     }
     
         }
@@ -187,7 +186,8 @@ app.post("/todoapp/:todo",function (req,res) {
   .then(function (err,message) {
       if (err) {
           console.log(err)
-        //   res.redirect("")
+          res.redirect("/signUp");
+          console.log("erro twiilo")
       } else {
 
         //    console.log(message.sid);
@@ -202,20 +202,22 @@ app.post("/todoapp/:todo",function (req,res) {
 });
     app.get("/todoapp/:id",function (req,res) {
     User.findById(req.params.id).populate("todo").exec(function (err,usertodo) {
+        var userLogin=usertodo.username;
         if (err) {
             console.log(err);
         } else {
             // console.log(usertodo);
             res.render("index",{
-                usertodo:usertodo
+                usertodo:usertodo,
+                userLogin:userLogin
             })
         }
     });
 });
-// app.get("/logout", function (req, res) {
-//     req.logout();
-//     res.redirect("/landing");
-// });
+app.get("/logout", function (req, res) {
+    // req.logout();
+    res.redirect("/");
+});
 // function escapeRegex(text) {
 //     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 // };
