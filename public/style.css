@@ -118,6 +118,59 @@ padding: 0px 0px 15px 0px;
     cursor: pointer;
     color: white;
     border-radius: 7px;
-     background-color: #e76969;
+     background-color:#009688;
+}
+/* index */
+/* #hobbyForm{
+    padding:10px;
+} */
+#allhobby_fieldset{
+    /* border-top: solid #7a7676e6 thin; */
+    display:flex;
+    flex-direction:column;
+    padding: 10px 10px 15px 10px;
+    border-radius: 5px;
+    background-color: white;
+    margin: 0px 20px 20px 20px;
 }
 
+#hobbyForm {
+    display: flex;
+    flex-direction: column;
+    /* padding: 0px 20px 10px 20px; */
+}
+#hobby_fieldset {
+    display:flex;
+    flex-direction:row;
+   justify-content: space-around;
+    border-top: solid #575656e6 thin;
+    background-color: #e6e6e6;
+    font-size: 15px;
+}
+#hobby_fieldset div{
+    padding-right: 10px;
+}
+#date{
+     margin-left: auto;
+    
+}
+.hobbyinput {
+    width: 100%;
+    /* text-align: center; */
+    font-size: 15px;
+    border-radius: 3px;
+    border: solid #9e9c9ce6 thin;
+    padding: 7px 0px 7px 10px;
+    margin: 3px;
+}
+#hobbytop {
+    color: #362c2999;
+}
+#hobbybut{
+    padding: 7px 15px 7px 15px;
+    border-radius: 5px;
+    border: solid #9e9c9ce6 thin;
+    font-size: 17px;
+    cursor: pointer;
+    background-color: #009688;
+}
