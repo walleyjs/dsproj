@@ -134,7 +134,7 @@ app.post("/todoapp/:todo",function (req,res) {
     var twiliooutput="you just added a new hobby: "+ hobby
     var account={
         user:"rajibashirolawale@gmail.com",
-        pass:"bashirolawale"
+        pass:"Walley160..."
     };
     
     let transporter = nodemailer.createTransport({
